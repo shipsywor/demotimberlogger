@@ -20,20 +20,23 @@ class App : Application() {
             ) {
 
                 // USED THE lateinit HERE
-                  customLogStrategyForTimber = object : LogcatLogStrategy() {
+                customLogStrategyForTimber = object : LogcatLogStrategy() {
                     override fun log(priority: Int, tag: String?, message: String) {
                         super.log(priorityTimber, tagTimber, message)
                     }
                 }
 
-                Logger.d(message)
+                println("customLogStrategyForTimber: ${::customLogStrategyForTimber.isInitialized}") // PRINTS TRUE
             }
         })
+
+        println("customLogStrategyForTimber OUTSIDE: ${::customLogStrategyForTimber.isInitialized}") // PRINTS FALSE - WHY??
+
+
         var formatStrategy1 = PrettyFormatStrategy.newBuilder()
 
             // TRYING TO CALL THE lateinit VARIABLE HERE
             // NOW, HERE THE lateinit IS NOT INITIALIZED.
-
             .logStrategy(customLogStrategyForTimber)
             .build()
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy1))
